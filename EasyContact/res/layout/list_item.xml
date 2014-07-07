@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/alpha_text"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffced2d7"
         android:gravity="center_vertical"
@@ -14,12 +14,13 @@
         android:paddingLeft="10.0dip"
         android:paddingTop="2.0dip"
         android:textColor="#ff595c61"
-        android:textSize="14dip"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:visibility="gone" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:id="@+id/expandable_toggle_button"
+        android:layout_width="match_parent"
         android:layout_height="54.0dip"
         android:background="@drawable/selector_list_item"
         android:minHeight="54.0dip"
@@ -35,7 +36,7 @@
             android:src="@drawable/ic_avatar" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical"
@@ -57,6 +58,31 @@
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textColor="#999999" />
         </LinearLayout>
+    </LinearLayout>
+
+    <!-- this is the expandable view that is initially hidden and will slide out when the more button is pressed -->
+
+    <LinearLayout
+        android:id="@+id/expandable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:orientation="horizontal" >
+
+        <!-- put whatever you want in the expandable view -->
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Dial" />
+
+        <Button
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:text="Email" />
     </LinearLayout>
 
 </LinearLayout>

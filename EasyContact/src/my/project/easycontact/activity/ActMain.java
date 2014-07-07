@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import my.project.easycontact.R;
+import my.project.easycontact.adapter.AdaContact;
 import my.project.easycontact.model.ContactItem;
 import my.project.easycontact.util.Utils;
 import my.project.easycontact.view.AlphaView;
 import my.project.easycontact.view.AlphaView.OnAlphaChangedListener;
+import my.project.easycontact.view.SlideExpandableListView.SlideExpandableListAdapter;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -20,25 +22,26 @@ import android.os.Handler;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class ActMain extends ActBase implements OnAlphaChangedListener {
 
 	private ListView listView;
+	private List<ContactItem> list;
+	private AdaContact adapter;
+
 	private AlphaView alphaView;
 	private TextView overlay;
 
 	private WindowManager windowManager;
 	private AsyncQueryHandler queryHandler;
-	private List<ContactItem> list;
-	private ListAdapter adapter;
 	private HashMap<String, Integer> alphaIndexer; // 存放存在的汉语拼音首字母和与之对应的列表位置
 	private OverlayThread overlayThread;
+
+	private Handler handler = new Handler();
 
 	private static final Uri uri = Uri
 			.parse("content://com.android.contacts/data/phones");
@@ -110,7 +113,6 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 
 		public MyAsyncQueryHandler(ContentResolver cr) {
 			super(cr);
-
 		}
 
 		@Override
@@ -126,96 +128,35 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 				}
 			}
 			if (list.size() > 0) {
+				initAlphaIndexer();
 				setAdapter();
 			}
 		}
 
 	}
 
+	private void initAlphaIndexer() {
+		for (int i = 0; i < list.size(); i++) {
+			// 当前汉语拼音首字母
+			String currentAlpha = list.get(i).getAlpha();
+			// 上一个汉语拼音首字母，如果不存在为“ ”
+			String previewAlpha = (i - 1) >= 0 ? list.get(i - 1).getAlpha()
+					: " ";
+			if (!previewAlpha.equals(currentAlpha)) {
+				String alpha = list.get(i).getAlpha();
+				alphaIndexer.put(alpha, i);
+			}
+		}
+	}
+
 	private void setAdapter() {
 		if (adapter == null) {
-			adapter = new ListAdapter();
-			listView.setAdapter(adapter);
+			adapter = new AdaContact(this, list);
+			listView.setAdapter(new SlideExpandableListAdapter(adapter));
 		} else {
 			adapter.notifyDataSetChanged();
 		}
 	}
-
-	private class ListAdapter extends BaseAdapter {
-		private LayoutInflater inflater;
-
-		public ListAdapter() {
-			this.inflater = LayoutInflater.from(ActMain.this);
-			for (int i = 0; i < list.size(); i++) {
-				// 当前汉语拼音首字母
-				String currentAlpha = list.get(i).getAlpha();
-				// 上一个汉语拼音首字母，如果不存在为“ ”
-				String previewAlpha = (i - 1) >= 0 ? list.get(i - 1).getAlpha()
-						: " ";
-				if (!previewAlpha.equals(currentAlpha)) {
-					String alpha = list.get(i).getAlpha();
-					alphaIndexer.put(alpha, i);
-				}
-			}
-		}
-
-		@Override
-		public int getCount() {
-			return list.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return list.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.list_item, null);
-				holder = new ViewHolder(convertView);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-
-			ContactItem item = list.get(position);
-			holder.name.setText(item.getName());
-			holder.number.setText(item.getNumber());
-
-			String currentAlpha = list.get(position).getAlpha();
-			String previewAlpha = (position - 1) >= 0 ? list.get(position - 1)
-					.getAlpha() : " ";
-			if (!previewAlpha.equals(currentAlpha)) {
-				holder.alpha.setVisibility(View.VISIBLE);
-				holder.alpha.setText(currentAlpha);
-			} else {
-				holder.alpha.setVisibility(View.GONE);
-			}
-			return convertView;
-		}
-
-	}
-
-	private final class ViewHolder {
-		TextView alpha;
-		TextView name;
-		TextView number;
-
-		public ViewHolder(View v) {
-			alpha = (TextView) v.findViewById(R.id.alpha_text);
-			name = (TextView) v.findViewById(R.id.name);
-			number = (TextView) v.findViewById(R.id.number);
-		}
-	}
-
-	private Handler handler = new Handler();
 
 	// 设置overlay不可见
 	private class OverlayThread implements Runnable {
