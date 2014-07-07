@@ -72,13 +72,14 @@
         <!-- put whatever you want in the expandable view -->
 
         <Button
+            android:id="@+id/dial"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:text="Dial" />
 
         <Button
-            android:id="@+id/details"
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.5"

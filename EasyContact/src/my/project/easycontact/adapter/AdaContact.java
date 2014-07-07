@@ -5,10 +5,14 @@ import java.util.List;
 import my.project.easycontact.R;
 import my.project.easycontact.model.ContactItem;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class AdaContact extends ArrayAdapter<ContactItem> {
@@ -29,7 +33,7 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		ContactItem item = getItem(position);
+		final ContactItem item = getItem(position);
 		holder.name.setText(item.getName());
 		holder.number.setText(item.getNumber());
 
@@ -42,6 +46,16 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 		} else {
 			holder.alpha.setVisibility(View.GONE);
 		}
+		holder.dial.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// 调用系统方法拨打电话
+				Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri
+						.parse("tel:" + item.getNumber()));
+				getContext().startActivity(dialIntent);
+			}
+		});
 		return convertView;
 	}
 
@@ -49,11 +63,15 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 		TextView alpha;
 		TextView name;
 		TextView number;
+		Button dial;
+		Button email;
 
 		public ViewHolder(View v) {
 			alpha = (TextView) v.findViewById(R.id.alpha_text);
 			name = (TextView) v.findViewById(R.id.name);
 			number = (TextView) v.findViewById(R.id.number);
+			dial = (Button) v.findViewById(R.id.dial);
+			email = (Button) v.findViewById(R.id.email);
 		}
 
 	}

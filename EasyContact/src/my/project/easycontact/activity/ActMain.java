@@ -64,22 +64,6 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 		initOverlay();
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		startQuery();
-	}
-
-	@Override
-	protected void onStop() {
-		try {
-			windowManager.removeViewImmediate(overlay);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		super.onStop();
-	}
-
 	// 初始化控件
 	private void intitWidget() {
 		listView = (ListView) findViewById(R.id.list_view);
@@ -101,6 +85,22 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 		windowManager = (WindowManager) this
 				.getSystemService(Context.WINDOW_SERVICE);
 		windowManager.addView(overlay, lp);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		startQuery();
+	}
+
+	@Override
+	protected void onStop() {
+		try {
+			windowManager.removeViewImmediate(overlay);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		super.onStop();
 	}
 
 	private void startQuery() {
@@ -126,6 +126,7 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 					item.setAlpha(Utils.formatAlpha(cursor.getString(3)));
 					list.add(item);
 				}
+				cursor.close();
 			}
 			if (list.size() > 0) {
 				initAlphaIndexer();
