@@ -14,12 +14,13 @@
         android:background="@drawable/info_bg"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="5dip" >
+        android:padding="8dip" >
 
         <TextView
             android:id="@+id/name_in_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dip"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -27,7 +28,8 @@
             android:id="@+id/company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dip"
+            android:layout_margin="2dip"
+            android:layout_marginLeft="8dip"
             android:text="Company:"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -36,7 +38,8 @@
             android:id="@+id/phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dip"
+            android:layout_margin="2dip"
+            android:layout_marginLeft="8dip"
             android:text="Phone:"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -45,7 +48,8 @@
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dip"
+            android:layout_margin="2dip"
+            android:layout_marginLeft="8dip"
             android:text="Email:"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -54,7 +58,8 @@
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dip"
+            android:layout_margin="2dip"
+            android:layout_marginLeft="8dip"
             android:text="Address:"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -75,7 +80,7 @@
             style="@style/btnStyleBeige"
             android:layout_width="0dip"
             android:layout_height="35dip"
-            android:layout_margin="2dip"
+            android:layout_margin="3dip"
             android:layout_weight="1"
             android:text="@string/dial" />
 
@@ -84,7 +89,7 @@
             style="@style/btnStyleBeige"
             android:layout_width="0dip"
             android:layout_height="35dip"
-            android:layout_margin="2dip"
+            android:layout_margin="3dip"
             android:layout_weight="1"
             android:text="@string/sms" />
 
@@ -93,7 +98,7 @@
             style="@style/btnStyleBeige"
             android:layout_width="0dip"
             android:layout_height="35dip"
-            android:layout_margin="2dip"
+            android:layout_margin="3dip"
             android:layout_weight="1"
             android:text="@string/mail" />
     </LinearLayout>

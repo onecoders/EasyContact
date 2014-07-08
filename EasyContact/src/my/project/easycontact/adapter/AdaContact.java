@@ -6,6 +6,8 @@ import java.util.List;
 import my.project.easycontact.R;
 import my.project.easycontact.model.ContactItem;
 import my.project.easycontact.util.ImageUtil;
+import my.project.easycontact.util.MToast;
+import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -24,15 +26,18 @@ import android.widget.TextView;
 
 public class AdaContact extends ArrayAdapter<ContactItem> {
 
+	private Context mContext;
+
 	public AdaContact(Context context, List<ContactItem> objects) {
 		super(context, 0, objects);
+		this.mContext = context;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = LayoutInflater.from(getContext()).inflate(
+			convertView = LayoutInflater.from(mContext).inflate(
 					R.layout.list_item, null);
 			holder = new ViewHolder(convertView);
 			convertView.setTag(holder);
@@ -41,45 +46,11 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 		}
 
 		final ContactItem item = getItem(position);
-		holder.name.setText(item.getName());
-		holder.number.setText(item.getNumber());
-
-		// photoid 大于0 表示联系人有头像 如果没有给此人设置头像则给他一个默认的
-		Bitmap contactPhoto;
-		if (item.getPhotoid() > 0) {
-			Uri uri = ContentUris.withAppendedId(
-					ContactsContract.Contacts.CONTENT_URI, item.getContactid());
-			InputStream input = ContactsContract.Contacts
-					.openContactPhotoInputStream(getContext()
-							.getContentResolver(), uri);
-			contactPhoto = BitmapFactory.decodeStream(input);
-			contactPhoto = ImageUtil.getRoundedCornerBitmap(contactPhoto, 10);
-		} else {
-			contactPhoto = BitmapFactory.decodeResource(getContext()
-					.getResources(), R.drawable.ic_avatar);
-		}
-		holder.photo.setImageBitmap(contactPhoto);
 
 		String currentAlpha = item.getAlpha();
 		String previewAlpha = (position - 1) >= 0 ? getItem(position - 1)
 				.getAlpha() : " ";
-		if (!previewAlpha.equals(currentAlpha)) {
-			holder.alpha.setVisibility(View.VISIBLE);
-			holder.alpha.setText(currentAlpha);
-		} else {
-			holder.alpha.setVisibility(View.GONE);
-		}
-		holder.nameInCard.setText(item.getName());
-		holder.dial.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// 调用系统方法拨打电话
-				Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri
-						.parse("tel:" + item.getNumber()));
-				getContext().startActivity(dialIntent);
-			}
-		});
+		holder.setContent(item, previewAlpha, currentAlpha);
 		return convertView;
 	}
 
@@ -108,6 +79,81 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 					R.id.btn_mail);
 		}
 
+		public void setContent(final ContactItem item, String previewAlpha,
+				String currentAlpha) {
+			name.setText(item.getName());
+			number.setText(item.getNumber());
+
+			// photoid 大于0 表示联系人有头像 如果没有给此人设置头像则给他一个默认的
+			Bitmap contactPhoto;
+			if (item.getPhotoid() > 0) {
+				Uri uri = ContentUris.withAppendedId(
+						ContactsContract.Contacts.CONTENT_URI,
+						item.getContactid());
+				InputStream input = ContactsContract.Contacts
+						.openContactPhotoInputStream(
+								mContext.getContentResolver(), uri);
+				contactPhoto = BitmapFactory.decodeStream(input);
+				contactPhoto = ImageUtil.getRoundedCornerBitmap(contactPhoto,
+						10);
+			} else {
+				contactPhoto = BitmapFactory.decodeResource(
+						mContext.getResources(), R.drawable.ic_avatar);
+			}
+			photo.setImageBitmap(contactPhoto);
+
+			if (!previewAlpha.equals(currentAlpha)) {
+				alpha.setVisibility(View.VISIBLE);
+				alpha.setText(currentAlpha);
+			} else {
+				alpha.setVisibility(View.GONE);
+			}
+			nameInCard.setText(item.getName());
+			OnClickListener l = new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					switch (v.getId()) {
+					case R.id.btn_dial:
+						dial(item.getNumber());
+						break;
+					case R.id.btn_sms:
+						sendSMS(item.getNumber());
+						break;
+					case R.id.btn_mail:
+						sendMail(item.getEmail());
+						break;
+					default:
+						break;
+					}
+				}
+			};
+			dial.setOnClickListener(l);
+			sms.setOnClickListener(l);
+			mail.setOnClickListener(l);
+		}
+	}
+
+	private void dial(String phoneNum) {
+		// 调用系统方法拨打电话
+		mContext.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:"
+				+ phoneNum)));
+	}
+
+	private void sendSMS(String phoneNum) {
+		mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"
+				+ phoneNum)));
+	}
+
+	private void sendMail(String address) {
+		Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",
+				address, null));
+		try {
+			mContext.startActivity(Intent.createChooser(i, mContext
+					.getResources().getString(R.string.please_choose)));
+		} catch (ActivityNotFoundException e) {
+			MToast.showText(mContext, R.string.no_choose);
+		}
 	}
 
 }

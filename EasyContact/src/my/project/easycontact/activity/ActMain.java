@@ -18,6 +18,7 @@ import android.database.Cursor;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.view.LayoutInflater;
@@ -43,15 +44,17 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 
 	private Handler handler = new Handler();
 
-	private static final String[] projection = { Phone._ID, Phone.DISPLAY_NAME,
-			Phone.NUMBER, Photo.PHOTO_ID, Phone.CONTACT_ID, "sort_key" };
+	private static final String[] PROJECTION = { Phone._ID, Phone.DISPLAY_NAME,
+			Phone.NUMBER, Photo.PHOTO_ID, Phone.CONTACT_ID, Email.ADDRESS,
+			"sort_key" };
 
 	private static final int PHONES_ID_INDEX = 0;
 	private static final int PHONES_DISPLAY_NAME_INDEX = 1;
 	private static final int PHONES_NUMBER_INDEX = 2;
 	private static final int PHONES_PHOTO_ID_INDEX = 3;
 	private static final int PHONES_CONTACT_ID_INDEX = 4;
-	private static final int PHONES_SORT_KEY = 5;
+	private static final int EMAIL_ADDRESS_INDEX = 5;
+	private static final int PHONES_SORT_KEY = 6;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,12 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 		startQuery();
 	}
 
+	private void startQuery() {
+		showProgressHUD();
+		queryHandler.startQuery(1, null, Phone.CONTENT_URI, PROJECTION,
+				"data1 is not null", null, "sort_key COLLATE LOCALIZED asc");
+	}
+
 	@Override
 	protected void onStop() {
 		try {
@@ -106,11 +115,6 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 			e.printStackTrace();
 		}
 		super.onStop();
-	}
-
-	private void startQuery() {
-		queryHandler.startQuery(1, null, Phone.CONTENT_URI, projection,
-				"data1 is not null", null, "sort_key COLLATE LOCALIZED asc");
 	}
 
 	// 异步查询类
@@ -132,6 +136,7 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 							.getString(PHONES_NUMBER_INDEX)));
 					item.setPhotoid(cursor.getLong(PHONES_PHOTO_ID_INDEX));
 					item.setContactid(cursor.getLong(PHONES_CONTACT_ID_INDEX));
+					item.setEmail(cursor.getString(EMAIL_ADDRESS_INDEX));
 					item.setAlpha(Utils.formatAlpha(cursor
 							.getString(PHONES_SORT_KEY)));
 					list.add(item);
@@ -142,6 +147,7 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 				initAlphaIndexer();
 				setAdapter();
 			}
+			dismissProgressHUD();
 		}
 
 	}

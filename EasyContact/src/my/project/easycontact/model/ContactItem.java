@@ -5,6 +5,7 @@ public class ContactItem {
 	private long _id;
 	private String name;
 	private String number;
+	private String email;
 	private long photoid;
 	private long contactid;
 	private String alpha;
@@ -31,6 +32,14 @@ public class ContactItem {
 
 	public void setNumber(String number) {
 		this.number = number;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public long getPhotoid() {

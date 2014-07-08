@@ -7,5 +7,8 @@
     <string name="dial">Dial</string>
     <string name="sms">SMS</string>
     <string name="mail">Mail</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="please_choose">Please Choose</string>
+    <string name="no_choose">No Mail App Found!</string>
 
 </resources>
