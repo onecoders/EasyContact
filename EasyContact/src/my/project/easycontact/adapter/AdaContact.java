@@ -64,14 +64,16 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 		TextView name;
 		TextView number;
 		Button dial;
-		Button email;
+		Button sms;
+		Button mail;
 
 		public ViewHolder(View v) {
 			alpha = (TextView) v.findViewById(R.id.alpha_text);
 			name = (TextView) v.findViewById(R.id.name);
 			number = (TextView) v.findViewById(R.id.number);
-			dial = (Button) v.findViewById(R.id.dial);
-			email = (Button) v.findViewById(R.id.email);
+			dial = (Button) v.findViewById(R.id.btn_dial);
+			sms = (Button) v.findViewById(R.id.btn_sms);
+			mail = (Button) v.findViewById(R.id.btn_mail);
 		}
 
 	}

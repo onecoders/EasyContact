@@ -11,8 +11,8 @@
         android:layout_height="48dip"
         android:background="@drawable/bg_header"
         android:gravity="center"
-        android:text="@string/title_contact"
-        android:textColor="#ffffffff"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
         android:textSize="22sp"
         android:textStyle="bold" />
 

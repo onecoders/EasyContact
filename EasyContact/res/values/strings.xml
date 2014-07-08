@@ -3,7 +3,9 @@
 
     <string name="app_name">EasyContact</string>
     <string name="action_settings">Settings</string>
-    <string name="title_contact">Easy Contact</string>
     <string name="contentDescription"></string>
+    <string name="dial">Dial</string>
+    <string name="sms">SMS</string>
+    <string name="mail">Mail</string>
 
 </resources>

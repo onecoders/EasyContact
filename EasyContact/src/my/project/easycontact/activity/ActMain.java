@@ -16,10 +16,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -43,10 +43,14 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 
 	private Handler handler = new Handler();
 
-	private static final Uri uri = Uri
-			.parse("content://com.android.contacts/data/phones");
 	private static final String[] projection = { Phone._ID, Phone.DISPLAY_NAME,
-			Phone.NUMBER, "sort_key" };
+			Phone.NUMBER, Photo.PHOTO_ID, "sort_key" };
+
+	private static final int PHONES_ID_INDEX = 0;
+	private static final int PHONES_DISPLAY_NAME_INDEX = 1;
+	private static final int PHONES_NUMBER_INDEX = 2;
+	private static final int PHONES_PHOTO_ID_INDEX = 3;
+	private static final int PHONES_SORT_KEY = 4;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +108,8 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 	}
 
 	private void startQuery() {
-		queryHandler.startQuery(1, null, uri, projection, "data1 is not null",
-				null, "sort_key COLLATE LOCALIZED asc");
+		queryHandler.startQuery(1, null, Phone.CONTENT_URI, projection,
+				"data1 is not null", null, "sort_key COLLATE LOCALIZED asc");
 	}
 
 	// 异步查询类
@@ -121,9 +125,13 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 			if (cursor != null) {
 				while (cursor.moveToNext()) {
 					ContactItem item = new ContactItem();
-					item.setName(cursor.getString(1));
-					item.setNumber(Utils.formatNumber(cursor.getString(2)));
-					item.setAlpha(Utils.formatAlpha(cursor.getString(3)));
+					item.set_id(cursor.getLong(PHONES_ID_INDEX));
+					item.setName(cursor.getString(PHONES_DISPLAY_NAME_INDEX));
+					item.setNumber(Utils.formatNumber(cursor
+							.getString(PHONES_NUMBER_INDEX)));
+					item.setPhotoid(cursor.getLong(PHONES_PHOTO_ID_INDEX));
+					item.setAlpha(Utils.formatAlpha(cursor
+							.getString(PHONES_SORT_KEY)));
 					list.add(item);
 				}
 				cursor.close();

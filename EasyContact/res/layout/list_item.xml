@@ -66,24 +66,31 @@
         android:id="@+id/expandable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
+        android:background="@color/white"
         android:orientation="horizontal" >
 
         <!-- put whatever you want in the expandable view -->
 
         <Button
-            android:id="@+id/dial"
-            android:layout_width="match_parent"
+            android:id="@+id/btn_dial"
+            android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:text="Dial" />
+            android:layout_weight="1"
+            android:text="@string/dial" />
 
         <Button
-            android:id="@+id/email"
-            android:layout_width="match_parent"
+            android:id="@+id/btn_sms"
+            android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:text="Email" />
+            android:layout_weight="1"
+            android:text="@string/sms" />
+
+        <Button
+            android:id="@+id/btn_mail"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/mail" />
     </LinearLayout>
 
 </LinearLayout>
