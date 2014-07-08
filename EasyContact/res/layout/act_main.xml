@@ -5,22 +5,17 @@
     android:background="#ffffff"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/title"
+    <include
+        android:id="@+id/actionbar"
         android:layout_width="match_parent"
         android:layout_height="48dip"
-        android:background="@drawable/bg_header"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        layout="@layout/ab_main" />
 
     <ListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title"
+        android:layout_below="@id/actionbar"
         android:cacheColorHint="#00000000"
         android:divider="@null"
         android:dividerHeight="0.0px"
@@ -33,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/title"
+        android:layout_below="@id/actionbar"
         android:layout_marginTop="5dip" />
 
     <TextView
