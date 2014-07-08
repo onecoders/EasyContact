@@ -5,8 +5,9 @@ public class ContactItem {
 	private long _id;
 	private String name;
 	private String number;
-	private String alpha;
 	private long photoid;
+	private long contactid;
+	private String alpha;
 
 	public long get_id() {
 		return _id;
@@ -32,20 +33,28 @@ public class ContactItem {
 		this.number = number;
 	}
 
-	public String getAlpha() {
-		return alpha;
-	}
-
-	public void setAlpha(String alpha) {
-		this.alpha = alpha;
-	}
-
 	public long getPhotoid() {
 		return photoid;
 	}
 
 	public void setPhotoid(long photoid) {
 		this.photoid = photoid;
+	}
+
+	public long getContactid() {
+		return contactid;
+	}
+
+	public void setContactid(long contactid) {
+		this.contactid = contactid;
+	}
+
+	public String getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(String alpha) {
+		this.alpha = alpha;
 	}
 
 }

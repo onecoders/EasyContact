@@ -1,18 +1,25 @@
 package my.project.easycontact.adapter;
 
+import java.io.InputStream;
 import java.util.List;
 
 import my.project.easycontact.R;
 import my.project.easycontact.model.ContactItem;
+import my.project.easycontact.util.ImageUtil;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AdaContact extends ArrayAdapter<ContactItem> {
@@ -36,6 +43,22 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 		final ContactItem item = getItem(position);
 		holder.name.setText(item.getName());
 		holder.number.setText(item.getNumber());
+
+		// photoid 大于0 表示联系人有头像 如果没有给此人设置头像则给他一个默认的
+		Bitmap contactPhoto;
+		if (item.getPhotoid() > 0) {
+			Uri uri = ContentUris.withAppendedId(
+					ContactsContract.Contacts.CONTENT_URI, item.getContactid());
+			InputStream input = ContactsContract.Contacts
+					.openContactPhotoInputStream(getContext()
+							.getContentResolver(), uri);
+			contactPhoto = BitmapFactory.decodeStream(input);
+			contactPhoto = ImageUtil.getRoundedCornerBitmap(contactPhoto, 10);
+		} else {
+			contactPhoto = BitmapFactory.decodeResource(getContext()
+					.getResources(), R.drawable.ic_avatar);
+		}
+		holder.photo.setImageBitmap(contactPhoto);
 
 		String currentAlpha = item.getAlpha();
 		String previewAlpha = (position - 1) >= 0 ? getItem(position - 1)
@@ -61,6 +84,7 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 
 	private final class ViewHolder {
 		TextView alpha;
+		ImageView photo;
 		TextView name;
 		TextView number;
 		Button dial;
@@ -69,6 +93,7 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 
 		public ViewHolder(View v) {
 			alpha = (TextView) v.findViewById(R.id.alpha_text);
+			photo = (ImageView) v.findViewById(R.id.photo);
 			name = (TextView) v.findViewById(R.id.name);
 			number = (TextView) v.findViewById(R.id.number);
 			dial = (Button) v.findViewById(R.id.btn_dial);
