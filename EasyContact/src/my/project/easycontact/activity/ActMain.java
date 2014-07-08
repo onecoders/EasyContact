@@ -19,6 +19,7 @@ import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.provider.ContactsContract.CommonDataKinds.Organization;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.view.LayoutInflater;
@@ -45,16 +46,18 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 	private Handler handler = new Handler();
 
 	private static final String[] PROJECTION = { Phone._ID, Phone.DISPLAY_NAME,
-			Phone.NUMBER, Photo.PHOTO_ID, Phone.CONTACT_ID, Email.ADDRESS,
-			"sort_key" };
+			Phone.NUMBER, Photo.PHOTO_ID, Phone.CONTACT_ID, Organization.DATA,
+			Organization.OFFICE_LOCATION, Email.DATA, "sort_key" };
 
 	private static final int PHONES_ID_INDEX = 0;
 	private static final int PHONES_DISPLAY_NAME_INDEX = 1;
 	private static final int PHONES_NUMBER_INDEX = 2;
 	private static final int PHONES_PHOTO_ID_INDEX = 3;
 	private static final int PHONES_CONTACT_ID_INDEX = 4;
-	private static final int EMAIL_ADDRESS_INDEX = 5;
-	private static final int PHONES_SORT_KEY = 6;
+	private static final int ORGANIZATION_COMPANY_INDEX = 5;
+	private static final int ORGANIZATION_OFFICE_LOCATION_INDEX = 6;
+	private static final int EMAIL_ADDRESS_INDEX = 7;
+	private static final int PHONES_SORT_KEY = 8;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +139,10 @@ public class ActMain extends ActBase implements OnAlphaChangedListener {
 							.getString(PHONES_NUMBER_INDEX)));
 					item.setPhotoid(cursor.getLong(PHONES_PHOTO_ID_INDEX));
 					item.setContactid(cursor.getLong(PHONES_CONTACT_ID_INDEX));
+					item.setCompany(cursor
+							.getString(ORGANIZATION_COMPANY_INDEX));
+					item.setOfficeLocation(cursor
+							.getString(ORGANIZATION_OFFICE_LOCATION_INDEX));
 					item.setEmail(cursor.getString(EMAIL_ADDRESS_INDEX));
 					item.setAlpha(Utils.formatAlpha(cursor
 							.getString(PHONES_SORT_KEY)));

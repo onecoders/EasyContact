@@ -57,12 +57,9 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 	private final class ViewHolder {
 		TextView alpha;
 		ImageView photo;
-		TextView name;
-		TextView number;
-		TextView nameInCard;
-		Button dial;
-		Button sms;
-		Button mail;
+		TextView name, number;
+		TextView nameInCard, company, phone, email, address;
+		Button dial, sms, mail;
 
 		public ViewHolder(View v) {
 			alpha = (TextView) v.findViewById(R.id.alpha_text);
@@ -71,6 +68,14 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 			number = (TextView) v.findViewById(R.id.number);
 			nameInCard = (TextView) v.findViewById(R.id.expandable)
 					.findViewById(R.id.name_in_card);
+			company = (TextView) v.findViewById(R.id.expandable).findViewById(
+					R.id.company);
+			phone = (TextView) v.findViewById(R.id.expandable).findViewById(
+					R.id.phone);
+			email = (TextView) v.findViewById(R.id.expandable).findViewById(
+					R.id.email);
+			address = (TextView) v.findViewById(R.id.expandable).findViewById(
+					R.id.address);
 			dial = (Button) v.findViewById(R.id.expandable).findViewById(
 					R.id.btn_dial);
 			sms = (Button) v.findViewById(R.id.expandable).findViewById(
@@ -109,6 +114,11 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 				alpha.setVisibility(View.GONE);
 			}
 			nameInCard.setText(item.getName());
+			company.setText(item.getCompany());
+			phone.setText(item.getNumber());
+			email.setText(item.getEmail());
+			address.setText(item.getOfficeLocation());
+
 			OnClickListener l = new OnClickListener() {
 
 				@Override

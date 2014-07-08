@@ -3,12 +3,8 @@ package my.project.easycontact.model;
 public class ContactItem {
 
 	private long _id;
-	private String name;
-	private String number;
-	private String email;
-	private long photoid;
-	private long contactid;
-	private String alpha;
+	private String name, number, email, company, officeLocation, alpha;
+	private long photoid, contactid;
 
 	public long get_id() {
 		return _id;
@@ -42,6 +38,30 @@ public class ContactItem {
 		this.email = email;
 	}
 
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public String getOfficeLocation() {
+		return officeLocation;
+	}
+
+	public void setOfficeLocation(String officeLocation) {
+		this.officeLocation = officeLocation;
+	}
+
+	public String getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(String alpha) {
+		this.alpha = alpha;
+	}
+
 	public long getPhotoid() {
 		return photoid;
 	}
@@ -56,14 +76,6 @@ public class ContactItem {
 
 	public void setContactid(long contactid) {
 		this.contactid = contactid;
-	}
-
-	public String getAlpha() {
-		return alpha;
-	}
-
-	public void setAlpha(String alpha) {
-		this.alpha = alpha;
 	}
 
 }
