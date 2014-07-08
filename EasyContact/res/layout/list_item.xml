@@ -62,42 +62,13 @@
 
     <!-- this is the expandable view that is initially hidden and will slide out when the more button is pressed -->
 
-    <LinearLayout
+    <include
         android:id="@+id/expandable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        layout="@layout/expandable"
         android:background="@color/white"
-        android:orientation="horizontal"
-        android:padding="2dip" >
-
-        <!-- put whatever you want in the expandable view -->
-
-        <Button
-            android:id="@+id/btn_dial"
-            style="@style/btnStyleBeige"
-            android:layout_width="0dip"
-            android:layout_height="35dip"
-            android:layout_margin="2dip"
-            android:layout_weight="1"
-            android:text="@string/dial" />
-
-        <Button
-            android:id="@+id/btn_sms"
-            style="@style/btnStyleBeige"
-            android:layout_width="0dip"
-            android:layout_height="35dip"
-            android:layout_margin="2dip"
-            android:layout_weight="1"
-            android:text="@string/sms" />
-
-        <Button
-            android:id="@+id/btn_mail"
-            style="@style/btnStyleBeige"
-            android:layout_width="0dip"
-            android:layout_height="35dip"
-            android:layout_margin="2dip"
-            android:layout_weight="1"
-            android:text="@string/mail" />
-    </LinearLayout>
+        android:orientation="vertical"
+        android:padding="2dip" />
 
 </LinearLayout>

@@ -69,6 +69,7 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 		} else {
 			holder.alpha.setVisibility(View.GONE);
 		}
+		holder.nameInCard.setText(item.getName());
 		holder.dial.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -87,6 +88,7 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 		ImageView photo;
 		TextView name;
 		TextView number;
+		TextView nameInCard;
 		Button dial;
 		Button sms;
 		Button mail;
@@ -96,9 +98,14 @@ public class AdaContact extends ArrayAdapter<ContactItem> {
 			photo = (ImageView) v.findViewById(R.id.photo);
 			name = (TextView) v.findViewById(R.id.name);
 			number = (TextView) v.findViewById(R.id.number);
-			dial = (Button) v.findViewById(R.id.btn_dial);
-			sms = (Button) v.findViewById(R.id.btn_sms);
-			mail = (Button) v.findViewById(R.id.btn_mail);
+			nameInCard = (TextView) v.findViewById(R.id.expandable)
+					.findViewById(R.id.name_in_card);
+			dial = (Button) v.findViewById(R.id.expandable).findViewById(
+					R.id.btn_dial);
+			sms = (Button) v.findViewById(R.id.expandable).findViewById(
+					R.id.btn_sms);
+			mail = (Button) v.findViewById(R.id.expandable).findViewById(
+					R.id.btn_mail);
 		}
 
 	}
